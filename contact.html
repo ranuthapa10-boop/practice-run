@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUMIS — Contact</title>
+
+  <!-- ✅ Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End GTM -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --bg:#0b0b0b; --surface:#131313; --gold:#c9a96e; --gold-light:#e8d5b0; --text:#f0ece4; --muted:#7a7570; --border:#222; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; background: rgba(11,11,11,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; letter-spacing: 0.3em; color: var(--gold); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-cta { background: var(--gold); color: #0b0b0b; padding: 0.6rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; font-weight: 500; }
+
+    /* PAGE HEADER */
+    .page-header { padding: 10rem 4rem 5rem; position: relative; overflow: hidden; }
+    .page-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 70% at 70% 50%, rgba(201,169,110,0.07), transparent); }
+    .eyebrow { font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .page-header h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem,5vw,4.5rem); font-weight: 300; max-width: 600px; line-height: 1.1; }
+
+    /* CONTACT GRID */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); }
+
+    /* CONTACT INFO */
+    .contact-info { background: var(--surface); padding: 4rem; }
+    .info-block { margin-bottom: 3rem; }
+    .info-label { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+    .info-value { font-size: 1rem; line-height: 1.6; }
+    .info-sub { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+
+    /* ✅ FUNCTIONAL CALL BUTTON */
+    .call-btn {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--gold); color: #0b0b0b;
+      padding: 1.2rem 2rem; text-decoration: none;
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em;
+      transition: all 0.3s; margin-top: 1.5rem;
+      border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+      width: fit-content;
+    }
+    .call-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.25); }
+    .call-btn .phone-icon { font-size: 1.2rem; }
+    .call-btn .call-text { display: flex; flex-direction: column; align-items: flex-start; }
+    .call-btn .call-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; }
+    .call-btn .call-number { font-size: 1rem; font-weight: 500; }
+
+    /* SECONDARY CONTACT OPTIONS */
+    .contact-options { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+    .contact-option {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem; border: 1px solid var(--border);
+      text-decoration: none; color: var(--text);
+      transition: all 0.3s;
+    }
+    .contact-option:hover { border-color: var(--gold); }
+    .contact-option .opt-icon { font-size: 1.2rem; width: 40px; text-align: center; }
+    .contact-option .opt-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+    .contact-option .opt-value { font-size: 0.9rem; margin-top: 0.1rem; }
+
+    /* HOURS */
+    .hours-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .hours-table tr td { padding: 0.4rem 0; font-size: 0.85rem; }
+    .hours-table tr td:first-child { color: var(--muted); }
+    .hours-table tr td:last-child { text-align: right; }
+
+    /* MAP PLACEHOLDER */
+    .map-col { background: var(--bg); position: relative; min-height: 500px; overflow: hidden; }
+    .map-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--bg);
+    }
+    .map-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.5;
+    }
+    .map-pin { font-size: 3rem; position: relative; z-index: 1; animation: bounce 2s ease-in-out infinite; }
+    .map-address { position: relative; z-index: 1; margin-top: 1rem; text-align: center; color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+    .map-label { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--gold); margin-bottom: 0.5rem; }
+
+    /* QUICK CONTACT FORM */
+    .quick-form { background: var(--surface); padding: 4rem; border-top: 2px solid var(--border); }
+    .quick-form h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    input, textarea {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); padding: 0.9rem 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border-color 0.3s; resize: vertical;
+    }
+    input:focus, textarea:focus { border-color: var(--gold); }
+    .submit-btn { background: var(--gold); color: #0b0b0b; border: none; padding: 1rem 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: all 0.3s; margin-top: 0.5rem; }
+    .submit-btn:hover { background: var(--gold-light); }
+    .success-msg { display: none; background: rgba(92,168,123,0.1); border: 1px solid rgba(92,168,123,0.3); padding: 1rem; color: #5ca87b; font-size: 0.85rem; margin-top: 1rem; }
+
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 4rem; display: flex; justify-content: space-between; }
+    footer p { font-size: 0.75rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { font-size: 0.75rem; color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    @media(max-width:900px){ .contact-grid { grid-template-columns: 1fr; } .map-col { min-height: 300px; } }
+    @media(max-width:600px){ nav { padding: 1rem 1.5rem; } .nav-links { display: none; } .page-header { padding: 7rem 1.5rem 3rem; } .contact-info, .quick-form { padding: 2rem 1.5rem; } footer { flex-direction: column; gap: 1rem; } }
+  </style>
+</head>
+<body>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<nav>
+  <a href="index.html" class="logo">LUMIS</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+    <li><a href="form.html">Enquire</a></li>
+  </ul>
+  <a href="checkout.html" class="nav-cta">Shop Now</a>
+</nav>
+
+<div class="page-header">
+  <div class="eyebrow">We'd love to hear from you</div>
+  <h1>Let's start a conversation.</h1>
+</div>
+
+<div class="contact-grid">
+  <div class="contact-info">
+    <div class="info-block">
+      <div class="info-label">Call Us Directly</div>
+      <div class="info-value">Available Mon–Fri, 9am to 6pm EST</div>
+      <div class="info-sub">Speak with a specialist about any product or order query.</div>
+      <!-- ✅ FUNCTIONAL CALL BUTTON - triggers tel: link + GTM event -->
+      <a href="tel:+18005550199"
+         class="call-btn"
+         onclick="dataLayer.push({event:'call_button_click',phone:'+18005550199',page:'contact'})">
+        <span class="phone-icon">📞</span>
+        <span class="call-text">
+          <span class="call-label">Call Now — Toll Free</span>
+          <span class="call-number">+1 (800) 555-0199</span>
+        </span>
+      </a>
+    </div>
+
+    <div class="info-block">
+      <div class="info-label">Other Ways to Reach Us</div>
+      <div class="contact-options">
+        <a href="mailto:hello@lumis.com" class="contact-option"
+           onclick="dataLayer.push({event:'contact_click',method:'email'})">
+          <span class="opt-icon">✉️</span>
+          <div>
+            <div class="opt-label">Email</div>
+            <div class="opt-value">hello@lumis.com</div>
+          </div>
+        </a>
+        <a href="sms:+18005550199" class="contact-option"
+           onclick="dataLayer.push({event:'contact_click',method:'sms'})">
+          <span class="opt-icon">💬</span>
+          <div>
+            <div class="opt-label">Text / SMS</div>
+            <div class="opt-value">+1 (800) 555-0199</div>
+          </div>
+        </a>
+        <a href="https://wa.me/18005550199" class="contact-option" target="_blank"
+           onclick="dataLayer.push({event:'contact_click',method:'whatsapp'})">
+          <span class="opt-icon">🟢</span>
+          <div>
+            <div class="opt-label">WhatsApp</div>
+            <div class="opt-value">Chat on WhatsApp</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-label">Business Hours</div>
+      <table class="hours-table">
+        <tr><td>Monday – Friday</td><td>9:00 AM – 6:00 PM EST</td></tr>
+        <tr><td>Saturday</td><td>10:00 AM – 4:00 PM EST</td></tr>
+        <tr><td>Sunday</td><td style="color:var(--muted)">Closed</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="map-col">
+    <div class="map-placeholder">
+      <div class="map-grid"></div>
+      <div class="map-pin">📍</div>
+      <div class="map-address">
+        <div class="map-label">LUMIS Studio</div>
+        350 Fifth Avenue, Suite 7500<br/>
+        New York, NY 10118<br/>
+        United States
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="quick-form">
+  <h2>Send us a message</h2>
+  <div class="form-group">
+    <label>Full Name *</label>
+    <input type="text" id="qName" placeholder="Jane Smith"/>
+  </div>
+  <div class="form-group">
+    <label>Email Address *</label>
+    <input type="email" id="qEmail" placeholder="jane@example.com"/>
+  </div>
+  <div class="form-group">
+    <label>Subject</label>
+    <input type="text" id="qSubject" placeholder="Order enquiry, product question…"/>
+  </div>
+  <div class="form-group">
+    <label>Message *</label>
+    <textarea id="qMessage" rows="5" placeholder="Tell us how we can help…"></textarea>
+  </div>
+  <button class="submit-btn" onclick="sendQuickMessage()">Send Message →</button>
+  <div class="success-msg" id="quickSuccess">
+    ✓ Thank you! We'll respond within 1 business day.
+  </div>
+</div>
+
+<footer>
+  <p>© 2024 LUMIS. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="checkout.html">Checkout</a>
+    <a href="contact.html">Contact</a>
+    <a href="form.html">Enquire</a>
+  </div>
+</footer>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({ event: 'page_view', page_title: 'Contact', page_path: '/contact.html' });
+
+  function sendQuickMessage() {
+    const name = document.getElementById('qName').value;
+    const email = document.getElementById('qEmail').value;
+    const message = document.getElementById('qMessage').value;
+    if (!name || !email || !message) { alert('Please fill in required fields.'); return; }
+    dataLayer.push({
+      event: 'contact_form_submit',
+      form_type: 'quick_contact',
+      form_name: name,
+      form_email: email
+    });
+    document.getElementById('quickSuccess').style.display = 'block';
+    document.getElementById('qName').value = '';
+    document.getElementById('qEmail').value = '';
+    document.getElementById('qSubject').value = '';
+    document.getElementById('qMessage').value = '';
+  }
+</script>
+</body>
+</html>
