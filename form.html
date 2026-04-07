@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUMIS — Enquiry Form</title>
+
+  <!-- ✅ Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End GTM -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --bg:#0b0b0b; --surface:#131313; --gold:#c9a96e; --gold-light:#e8d5b0; --text:#f0ece4; --muted:#7a7570; --border:#222; --error:#e05c5c; --success:#5ca87b; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; background: rgba(11,11,11,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; letter-spacing: 0.3em; color: var(--gold); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-cta { background: var(--gold); color: #0b0b0b; padding: 0.6rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; font-weight: 500; }
+
+    /* LAYOUT */
+    .form-page { display: grid; grid-template-columns: 1fr 480px; min-height: 100vh; padding-top: 80px; }
+    .form-col { padding: 5rem 4rem; }
+    .sidebar { background: var(--surface); border-left: 1px solid var(--border); padding: 5rem 3rem; position: sticky; top: 80px; align-self: start; }
+
+    .eyebrow { font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.1; margin-bottom: 1rem; }
+    .page-desc { color: var(--muted); line-height: 1.8; font-size: 0.9rem; max-width: 480px; margin-bottom: 3rem; }
+
+    /* FORM SECTIONS */
+    .form-section { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+    .form-section:last-of-type { border-bottom: none; }
+    .section-heading { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .section-num { font-size: 0.7rem; letter-spacing: 0.2em; background: var(--gold); color: #0b0b0b; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    /* FIELDS */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.2rem; position: relative; }
+    label { display: block; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+    .required-star { color: var(--gold); }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); padding: 0.9rem 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border-color 0.3s; resize: vertical;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+    input.invalid, select.invalid, textarea.invalid { border-color: var(--error); }
+    .field-error { font-size: 0.7rem; color: var(--error); margin-top: 0.3rem; display: none; }
+    select option { background: var(--surface); }
+
+    /* RADIO / CHECKBOX GROUP */
+    .option-group { display: flex; flex-direction: column; gap: 0.6rem; }
+    .option-item { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; }
+    .option-item input[type="radio"], .option-item input[type="checkbox"] {
+      width: 16px; height: 16px; padding: 0; background: var(--bg);
+      border: 1px solid var(--border); accent-color: var(--gold); cursor: pointer;
+      flex-shrink: 0;
+    }
+    .option-item label { font-size: 0.85rem; letter-spacing: 0; text-transform: none; color: var(--text); margin: 0; cursor: pointer; }
+
+    /* CHECKBOX GRID */
+    .checkbox-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0; background: var(--border); }
+    .checkbox-card { background: var(--surface); padding: 1rem; display: flex; align-items: center; gap: 0.8rem; cursor: pointer; transition: background 0.2s; }
+    .checkbox-card:hover { background: #181818; }
+    .checkbox-card input { width: 16px; height: 16px; padding: 0; accent-color: var(--gold); flex-shrink: 0; }
+    .checkbox-card label { font-size: 0.82rem; color: var(--text); cursor: pointer; letter-spacing: 0; text-transform: none; margin: 0; }
+
+    /* RANGE SLIDER */
+    .range-wrapper { position: relative; }
+    input[type="range"] {
+      -webkit-appearance: none; width: 100%; height: 2px;
+      background: var(--border); outline: none; padding: 0;
+      border: none; margin: 0.5rem 0;
+    }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--gold); cursor: pointer; border-radius: 0; }
+    .range-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); }
+    .range-value { font-size: 0.9rem; color: var(--gold); margin-top: 0.5rem; }
+
+    /* FILE UPLOAD */
+    .file-upload { border: 1px dashed var(--border); padding: 2rem; text-align: center; cursor: pointer; transition: border-color 0.3s; position: relative; }
+    .file-upload:hover { border-color: var(--gold); }
+    .file-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .file-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .file-label { font-size: 0.8rem; color: var(--muted); }
+    .file-label strong { color: var(--gold); }
+    .file-name { font-size: 0.8rem; color: var(--success); margin-top: 0.5rem; display: none; }
+
+    /* RATING */
+    .star-rating { display: flex; gap: 0.5rem; flex-direction: row-reverse; justify-content: flex-end; }
+    .star-rating input { display: none; }
+    .star-rating label { font-size: 1.8rem; cursor: pointer; color: var(--border); transition: color 0.2s; letter-spacing: 0; text-transform: none; }
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label { color: var(--gold); }
+
+    /* GDPR */
+    .gdpr-box { background: var(--surface); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .gdpr-box p { font-size: 0.8rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+    .gdpr-box .option-item label { font-size: 0.82rem; }
+
+    /* SUBMIT */
+    .submit-area { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .submit-btn { background: var(--gold); color: #0b0b0b; border: none; padding: 1.1rem 3rem; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: all 0.3s; }
+    .submit-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .submit-note { font-size: 0.75rem; color: var(--muted); }
+
+    /* PROGRESS BAR */
+    .progress-bar-wrap { position: fixed; top: 80px; left: 0; right: 0; height: 2px; background: var(--border); z-index: 99; }
+    .progress-bar { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s; }
+
+    /* SUCCESS */
+    .success-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 500; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 2rem; }
+    .success-overlay.show { display: flex; }
+    .success-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+    .success-overlay h2 { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; margin-bottom: 1rem; }
+    .success-overlay p { color: var(--muted); max-width: 420px; line-height: 1.8; margin-bottom: 2.5rem; }
+    .ref-num { font-size: 0.7rem; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 0.3rem; text-transform: uppercase; }
+
+    /* SIDEBAR */
+    .sidebar h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; margin-bottom: 1.5rem; }
+    .sidebar-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start; }
+    .sidebar-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .sidebar-text .s-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.2rem; }
+    .sidebar-text .s-val { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+    .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .sidebar .call-btn { display: flex; align-items: center; gap: 0.8rem; background: var(--gold); color: #0b0b0b; padding: 1rem 1.5rem; text-decoration: none; font-size: 0.8rem; font-weight: 500; transition: all 0.3s; }
+    .sidebar .call-btn:hover { background: var(--gold-light); }
+
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 4rem; display: flex; justify-content: space-between; }
+    footer p { font-size: 0.75rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { font-size: 0.75rem; color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--gold); }
+
+    @media(max-width:1024px){ .form-page { grid-template-columns: 1fr; } .sidebar { position: static; border-left: none; border-top: 1px solid var(--border); } }
+    @media(max-width:600px){ nav { padding: 1rem 1.5rem; } .nav-links { display: none; } .form-col { padding: 3rem 1.5rem; } .form-row { grid-template-columns: 1fr; } .checkbox-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 1rem; } }
+  </style>
+</head>
+<body>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<nav>
+  <a href="index.html" class="logo">LUMIS</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="form.html" class="active">Enquire</a></li>
+  </ul>
+  <a href="checkout.html" class="nav-cta">Shop Now</a>
+</nav>
+
+<div class="form-page">
+  <!-- MAIN FORM COLUMN -->
+  <div class="form-col">
+    <div class="eyebrow">Private Enquiry</div>
+    <h1>Tell us what you're looking for.</h1>
+    <p class="page-desc">Whether you're looking for a bespoke piece, a bulk order, or simply want to learn more — this form connects you directly with our specialist team.</p>
+
+    <!-- SECTION 1: PERSONAL INFO -->
+    <div class="form-section">
+      <div class="section-heading"><span class="section-num">1</span>Personal Information</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span class="required-star">*</span></label>
+          <input type="text" id="firstName" placeholder="Jane" oninput="trackFieldInteraction('first_name')"/>
+          <div class="field-error" id="firstNameErr">Please enter your first name.</div>
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="required-star">*</span></label>
+          <input type="text" id="lastName" placeholder="Smith"/>
+          <div class="field-error" id="lastNameErr">Please enter your last name.</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address <span class="required-star">*</span></label>
+          <input type="email" id="email" placeholder="jane@example.com" oninput="trackFieldInteraction('email')"/>
+          <div class="field-error" id="emailErr">Please enter a valid email address.</div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="phone" placeholder="+1 (555) 000-0000"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Company / Organisation</label>
+        <input type="text" id="company" placeholder="(optional)"/>
+      </div>
+    </div>
+
+    <!-- SECTION 2: ENQUIRY TYPE -->
+    <div class="form-section">
+      <div class="section-heading"><span class="section-num">2</span>Enquiry Type</div>
+      <div class="form-group">
+        <label>What are you enquiring about? <span class="required-star">*</span></label>
+        <div class="option-group">
+          <div class="option-item">
+            <input type="radio" name="enquiryType" id="typeProduct" value="Product Information" onchange="trackFormInteraction('enquiry_type','Product Information')"/>
+            <label for="typeProduct">Product Information</label>
+          </div>
+          <div class="option-item">
+            <input type="radio" name="enquiryType" id="typeBespoke" value="Bespoke / Custom Order" onchange="trackFormInteraction('enquiry_type','Bespoke Order')"/>
+            <label for="typeBespoke">Bespoke / Custom Order</label>
+          </div>
+          <div class="option-item">
+            <input type="radio" name="enquiryType" id="typeWholesale" value="Wholesale / Trade" onchange="trackFormInteraction('enquiry_type','Wholesale')"/>
+            <label for="typeWholesale">Wholesale / Trade Enquiry</label>
+          </div>
+          <div class="option-item">
+            <input type="radio" name="enquiryType" id="typePress" value="Press / Media" onchange="trackFormInteraction('enquiry_type','Press')"/>
+            <label for="typePress">Press / Media</label>
+          </div>
+          <div class="option-item">
+            <input type="radio" name="enquiryType" id="typeOther" value="Other" onchange="trackFormInteraction('enquiry_type','Other')"/>
+            <label for="typeOther">Other</label>
+          </div>
+        </div>
+        <div class="field-error" id="enquiryTypeErr">Please select an enquiry type.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: PRODUCT INTEREST -->
+    <div class="form-section">
+      <div class="section-heading"><span class="section-num">3</span>Product Interest</div>
+      <div class="form-group">
+        <label>Which categories interest you?</label>
+        <div class="checkbox-grid">
+          <div class="checkbox-card">
+            <input type="checkbox" id="catHome" value="Home Objects" onchange="trackFormInteraction('category','Home Objects')"/>
+            <label for="catHome">🏺 Home Objects</label>
+          </div>
+          <div class="checkbox-card">
+            <input type="checkbox" id="catAccess" value="Accessories" onchange="trackFormInteraction('category','Accessories')"/>
+            <label for="catAccess">⌚ Accessories</label>
+          </div>
+          <div class="checkbox-card">
+            <input type="checkbox" id="catLife" value="Lifestyle" onchange="trackFormInteraction('category','Lifestyle')"/>
+            <label for="catLife">🕯️ Lifestyle</label>
+          </div>
+          <div class="checkbox-card">
+            <input type="checkbox" id="catCustom" value="Custom / Bespoke" onchange="trackFormInteraction('category','Custom')"/>
+            <label for="catCustom">✦ Custom / Bespoke</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Preferred Product</label>
+        <select id="preferredProduct" onchange="trackFormInteraction('preferred_product', this.value)">
+          <option value="">— Select a product —</option>
+          <option>Obsidian Vessel</option>
+          <option>Meridian Watch Strap</option>
+          <option>Grove Candle Set</option>
+          <option>Linen Throw</option>
+          <option>Brass Card Holder</option>
+          <option>Hinoki Bath Set</option>
+          <option>Custom / Not Listed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Quantity (if applicable)</label>
+        <input type="number" id="quantity" placeholder="1" min="1"/>
+      </div>
+    </div>
+
+    <!-- SECTION 4: BUDGET -->
+    <div class="form-section">
+      <div class="section-heading"><span class="section-num">4</span>Budget Range</div>
+      <div class="form-group">
+        <label>Approximate Budget</label>
+        <div class="range-wrapper">
+          <input type="range" id="budgetRange" min="0" max="5000" step="100" value="500"
+            oninput="updateBudget(this.value)"/>
+          <div class="range-labels"><span>$0</span><span>$5,000+</span></div>
+          <div class="range-value" id="budgetValue">$500</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Currency Preference</label>
+        <select id="currency" onchange="trackFormInteraction('currency', this.value)">
+          <option>USD — US Dollar</option>
+          <option>GBP — British Pound</option>
+          <option>EUR — Euro</option>
+          <option>INR — Indian Rupee</option>
+          <option>AUD — Australian Dollar</option>
+          <option>CAD — Canadian Dollar</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- SECTION 5: HOW DID YOU HEAR -->
+    <div class="form-section">
+      <div class="section-heading"><span class="section-num">5</span>About Your Visit</div>
+      <div class="form-group">
+        <label>How did you find us?</label>
+        <select id="referralSource" onchange="trackFormInteraction('referral_source', this.value)">
+          <option value="">— Please select —</option>
+          <option>Google Search</option>
+          <option>Instagram</option>
+          <option>Pinterest</option>
+          <option>Word of Mouth</option>
+          <option>Press / Editorial</option>
+          <option>In-Store Visit</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>How would you rate your experience on our website?</label>
+        <div class="star-rating">
+          <input type="radio" id="s5" name="rating" value="5"/><label for="s5" title="5 stars">★</label>
+          <input type="radio" id="s4" name="rating" value="4"/><label for="s4" title="4 stars">★</label>
+          <input type="radio" id="s3" name="rating" value="3"/><label for="s3" title="3 stars">★</label>
+          <input type="radio" id="s2" name="rating" value="2"/><label for="s2" title="2 stars">★</label>
+          <input type="radio" id="s1" name="rating" value="1"/><label for="s1" title="1 star">★</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: MESSAGE + UPLOAD -->
+    <div class="form-section">
+      <div class="section-heading"><span class="section-num">6</span>Your Message</div>
+      <div class="form-group">
+        <label>Message <span class="required-star">*</span></label>
+        <textarea id="message" rows="6" placeholder="Please describe your enquiry in as much detail as you like…" oninput="trackFieldInteraction('message')"></textarea>
+        <div class="field-error" id="messageErr">Please enter your message.</div>
+      </div>
+      <div class="form-group">
+        <label>Attach a File (optional)</label>
+        <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+          <input type="file" id="fileInput" onchange="handleFile(this)" accept=".pdf,.jpg,.png,.doc,.docx"/>
+          <div class="file-icon">📎</div>
+          <div class="file-label">Click to upload or drag a file here<br/><strong>PDF, JPG, PNG, DOC</strong> — max 10MB</div>
+          <div class="file-name" id="fileName"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 7: GDPR / CONSENT -->
+    <div class="form-section">
+      <div class="section-heading"><span class="section-num">7</span>Privacy &amp; Consent</div>
+      <div class="gdpr-box">
+        <p>By submitting this form, you agree to our <a href="#" style="color:var(--gold)">Privacy Policy</a>. Your data will only be used to respond to your enquiry and improve our services. We will never sell your data to third parties.</p>
+        <div class="option-item" style="margin-bottom:0.8rem">
+          <input type="checkbox" id="consentMain" onchange="trackFormInteraction('consent','privacy_accepted')"/>
+          <label for="consentMain">I agree to the Privacy Policy and consent to LUMIS storing and processing my data. <span class="required-star">*</span></label>
+        </div>
+        <div class="option-item">
+          <input type="checkbox" id="consentMarketing" onchange="trackFormInteraction('consent','marketing_opted_in')"/>
+          <label for="consentMarketing">I'd like to receive updates, collections news, and exclusive offers from LUMIS. (optional)</label>
+        </div>
+        <div class="field-error" id="consentErr" style="display:none;margin-top:0.5rem">You must agree to the privacy policy to continue.</div>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-area">
+      <button class="submit-btn" id="submitBtn" onclick="submitEnquiry()">Submit Enquiry →</button>
+      <span class="submit-note">We typically respond within 1 business day.</span>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h3>Need help deciding?</h3>
+
+    <div class="sidebar-item">
+      <span class="sidebar-icon">📞</span>
+      <div class="sidebar-text">
+        <div class="s-label">Speak to a Specialist</div>
+        <div class="s-val">Our team is available Monday–Friday, 9am–6pm EST.</div>
+      </div>
+    </div>
+
+    <!-- ✅ CALL BUTTON IN SIDEBAR -->
+    <a href="tel:+18005550199" class="call-btn"
+       onclick="dataLayer.push({event:'call_button_click',phone:'+18005550199',page:'form'})">
+      📞 &nbsp; +1 (800) 555-0199
+    </a>
+
+    <hr class="sidebar-divider"/>
+
+    <div class="sidebar-item">
+      <span class="sidebar-icon">⏱️</span>
+      <div class="sidebar-text">
+        <div class="s-label">Response Time</div>
+        <div class="s-val">Within 1 business day for all enquiries.</div>
+      </div>
+    </div>
+    <div class="sidebar-item">
+      <span class="sidebar-icon">🔒</span>
+      <div class="sidebar-text">
+        <div class="s-label">Your Data is Safe</div>
+        <div class="s-val">All submissions are encrypted and GDPR-compliant.</div>
+      </div>
+    </div>
+    <div class="sidebar-item">
+      <span class="sidebar-icon">✦</span>
+      <div class="sidebar-text">
+        <div class="s-label">Bespoke Service</div>
+        <div class="s-val">We can accommodate custom orders, bulk pricing, and exclusive commissions.</div>
+      </div>
+    </div>
+
+    <hr class="sidebar-divider"/>
+
+    <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem">Form Progress</div>
+    <div style="background:var(--border);height:4px;border-radius:0">
+      <div id="sidebarProgress" style="background:var(--gold);height:4px;width:0%;transition:width 0.3s"></div>
+    </div>
+    <div id="sidebarProgressText" style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem">0% complete</div>
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-icon">✦</div>
+  <div class="ref-num" id="refNum"></div>
+  <h2>Enquiry Received.</h2>
+  <p>Thank you for reaching out to LUMIS. One of our specialists will review your message and be in touch within one business day.</p>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center">
+    <a href="products.html" style="background:var(--gold);color:#0b0b0b;padding:0.9rem 2rem;text-decoration:none;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;">Explore Products</a>
+    <a href="index.html" style="border:1px solid var(--border);color:var(--text);padding:0.9rem 2rem;text-decoration:none;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;">Back to Home</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2024 LUMIS. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="checkout.html">Checkout</a>
+    <a href="contact.html">Contact</a>
+    <a href="form.html">Enquire</a>
+  </div>
+</footer>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  dataLayer.push({ event: 'page_view', page_title: 'Enquiry Form', page_path: '/form.html' });
+
+  const fieldsTouched = new Set();
+
+  function trackFieldInteraction(field) {
+    if (!fieldsTouched.has(field)) {
+      fieldsTouched.add(field);
+      dataLayer.push({ event: 'form_field_interaction', field_name: field, form_name: 'enquiry_form' });
+    }
+    updateProgress();
+  }
+
+  function trackFormInteraction(field, value) {
+    dataLayer.push({ event: 'form_interaction', field_name: field, field_value: value, form_name: 'enquiry_form' });
+    updateProgress();
+  }
+
+  function updateBudget(val) {
+    document.getElementById('budgetValue').textContent = '$' + parseInt(val).toLocaleString() + (parseInt(val) >= 5000 ? '+' : '');
+    trackFormInteraction('budget', val);
+  }
+
+  function handleFile(input) {
+    if (input.files && input.files[0]) {
+      const fn = document.getElementById('fileName');
+      fn.textContent = '✓ ' + input.files[0].name;
+      fn.style.display = 'block';
+      dataLayer.push({ event: 'file_attached', file_name: input.files[0].name, form_name: 'enquiry_form' });
+    }
+  }
+
+  function updateProgress() {
+    const total = 5;
+    let filled = 0;
+    if (document.getElementById('firstName').value) filled++;
+    if (document.getElementById('email').value) filled++;
+    if (document.querySelector('input[name="enquiryType"]:checked')) filled++;
+    if (document.getElementById('message').value) filled++;
+    if (document.getElementById('consentMain').checked) filled++;
+    const pct = Math.round((filled / total) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('sidebarProgress').style.width = pct + '%';
+    document.getElementById('sidebarProgressText').textContent = pct + '% complete';
+  }
+
+  function submitEnquiry() {
+    let valid = true;
+
+    // Validate required fields
+    const firstName = document.getElementById('firstName');
+    if (!firstName.value.trim()) {
+      firstName.classList.add('invalid');
+      document.getElementById('firstNameErr').style.display = 'block';
+      valid = false;
+    } else { firstName.classList.remove('invalid'); document.getElementById('firstNameErr').style.display = 'none'; }
+
+    const email = document.getElementById('email');
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailReg.test(email.value)) {
+      email.classList.add('invalid');
+      document.getElementById('emailErr').style.display = 'block';
+      valid = false;
+    } else { email.classList.remove('invalid'); document.getElementById('emailErr').style.display = 'none'; }
+
+    const enquiryType = document.querySelector('input[name="enquiryType"]:checked');
+    if (!enquiryType) {
+      document.getElementById('enquiryTypeErr').style.display = 'block';
+      valid = false;
+    } else { document.getElementById('enquiryTypeErr').style.display = 'none'; }
+
+    const message = document.getElementById('message');
+    if (!message.value.trim()) {
+      message.classList.add('invalid');
+      document.getElementById('messageErr').style.display = 'block';
+      valid = false;
+    } else { message.classList.remove('invalid'); document.getElementById('messageErr').style.display = 'none'; }
+
+    const consent = document.getElementById('consentMain');
+    if (!consent.checked) {
+      document.getElementById('consentErr').style.display = 'block';
+      valid = false;
+    } else { document.getElementById('consentErr').style.display = 'none'; }
+
+    if (!valid) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+
+    // GTM tracking
+    const rating = document.querySelector('input[name="rating"]:checked');
+    const categories = [...document.querySelectorAll('input[type="checkbox"][id^="cat"]:checked')].map(c => c.value);
+
+    dataLayer.push({
+      event: 'enquiry_form_submit',
+      form_name: 'enquiry_form',
+      enquiry_type: enquiryType.value,
+      product_categories: categories.join(', '),
+      preferred_product: document.getElementById('preferredProduct').value,
+      budget: document.getElementById('budgetRange').value,
+      referral_source: document.getElementById('referralSource').value,
+      rating: rating ? rating.value : 'not_rated',
+      marketing_consent: document.getElementById('consentMarketing').checked,
+      page_path: '/form.html'
+    });
+
+    // Show success
+    const ref = 'LMQ-' + Math.floor(Math.random()*90000+10000);
+    document.getElementById('refNum').textContent = 'Reference: ' + ref;
+    document.getElementById('successOverlay').classList.add('show');
+  }
+
+  // Live validation on blur
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('email').addEventListener('blur', () => {
+      const v = document.getElementById('email').value;
+      if (v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+        document.getElementById('email').classList.add('invalid');
+        document.getElementById('emailErr').style.display = 'block';
+      }
+    });
+
+    // Track scroll depth
+    let maxScroll = 0;
+    window.addEventListener('scroll', () => {
+      const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      if (pct > maxScroll + 25) {
+        maxScroll = pct;
+        dataLayer.push({ event: 'scroll_depth', depth: pct + '%', page: 'form' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
